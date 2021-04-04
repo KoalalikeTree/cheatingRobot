@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Robot</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+			body {
+				color: #222;
+			}
+
+			a {
+				color: #2fa1d6;
+			}
+
+			p {
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 0 2em;
+			}
+		</style>
+	</head>
+
+	<style>
+	.game-title{
+		position:absolute;
+		height: 50vh;
+		width:50vw;
+		background:white;
+    	left: 25vw;
+		top: 25vh;
+		border-radius: 10px;
+	}
+	.game-score{
+		padding: 20px;
+	}
+	.start{
+		text-align: center;
+		position:relative;
+	}
+	#msgbox{
+		width: 500px;
+		height: 500px;
+		background-image: url(examples/models/gltf/RobotExpressive/msgbox.png);
+		background-size: contain;
+		position: fixed;
+		left: 20vh;
+		top: 5vh;
+		background-repeat: no-repeat;
+		display: none;
+	}
+	#answer{
+		position:absolute;
+		width:50vw;
+		left: 25vw;
+		bottom: 5vh;
+		height: 30vh;
+		text-align: center;
+		display: none;
+
+	}
+	.user-option{
+		width:100%;
+		height:auto;
+		background: #9effff;
+		border-radius: 10px;
+	}
+	#cards{
+		position:absolute;
+		width:60vw;
+		left: 20vw;
+		bottom: 5vh;
+		height: 30vh;
+		text-align: center;
+		display: flex;
+		flex-direction: row;
+		/*display: none;*/
+	}
+	.card-option{
+		width:18vw;
+		margin:1vw;
+		background: #5A5A5A;
+		border-radius: 10px;
+	}
+	h1{
+		font-size: 50px;
+		text-align: center;
+		line-height: 40px;
+		padding-top:2vh;
+	}
+	h2{
+		text-align: center;
+		font-size: 30px;
+		padding-top:2vh;
+		padding-bottom: 2vh;
+	}
+	</style>
+
+	<body>
+		<div class="game-title">
+			<div style="padding: 20px;"><h1>Round One</h1></div>
+			<div class="game-score"><h2>Your score: 100</h2></div>
+			<div class="start"><button style="width:10vw; height:10vh" id="next-rount-btn">Next Round</button></div>
+		</div>
+		<div id="msgbox"><h2 style="margin:10px">Your guess is not correct, the correct answer is A </h2></div>
+		<div id="answer">
+			<button class="user-option">
+				<h2>What???</h2>
+			</button>
+			<button class="user-option">
+				<h2>Okay...</h2>
+			</button>
+			<button class="user-option">
+				<h2>Are you serious?</h2>
+			</button>
+		</div>
+		<div id="cards">
+			<button class="card-option">
+				<h1>A</h1>
+			</button>
+			<button class="card-option">
+				<h1>B</h1>
+			</button>
+			<button class="card-option">
+				<h1>C</h1>
+			</button>
+		</div>
+
+		<script type="module">
+
+			import * as THREE from './build/three.module.js';
+
+			import Stats from './examples/jsm/libs/stats.module.js';
+			import { GUI } from './examples/jsm/libs/dat.gui.module.js';
+
+			import { GLTFLoader } from './examples/jsm/loaders/GLTFLoader.js';
+
+			let container, stats, clock, gui, mixer, actions, activeAction, previousAction;
+			let camera, scene, renderer, model, face;
+			let switchCard_clip, switchCard_action;
+
+			const api = { state: 'Walking' };
+			$('#cards').fadeOut(0);
+			$( '#next-rount-btn' ).click(async function () {
+				document.getElementsByClassName( 'game-title' )[0].style.display = "none";
+				switchCard_action.play();
+				await sleep(5000);
+				$('#cards').fadeIn(200);
+
+			} );
+			$('.card-option').click(async function(){
+				$('#cards').fadeOut(500);
+				await sleep(200);
+				$( '#msgbox' ).fadeIn(500);
+				await sleep(500);
+				$( '#answer' ).fadeIn(500);
+			})
+			$('.user-option').click(function(){
+				$( '#msgbox' ).fadeOut(200);
+				$('#answer').fadeOut(200)
+				$('.game-title').fadeIn(200);
+			})
+
+
+			init();
+			animate();
+			function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 100 );
+				camera.position.set( - 5, 3, 10 );
+				camera.lookAt( new THREE.Vector3( 0, 2, 0 ) );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xe0e0e0 );
+				scene.fog = new THREE.Fog( 0xe0e0e0, 20, 100 );
+
+				clock = new THREE.Clock();
+
+				// lights
+
+				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+				hemiLight.position.set( 0, 20, 0 );
+				scene.add( hemiLight );
+
+				const dirLight = new THREE.DirectionalLight( 0xffffff );
+				dirLight.position.set( 0, 20, 10 );
+				scene.add( dirLight );
+
+				// ground
+
+				const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+				mesh.rotation.x = - Math.PI / 2;
+				scene.add( mesh );
+
+				const grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
+				grid.material.opacity = 0.2;
+				grid.material.transparent = true;
+				scene.add( grid );
+
+				// model
+
+				const loader = new GLTFLoader();
+				loader.load( './examples/models/gltf/RobotExpressive/robot.glb', function ( gltf ) {
+
+					model = gltf.scene;
+					scene.add( model );
+
+					// createGUI( model, gltf.animations );
+					mixer = new THREE.AnimationMixer( model );
+					switchCard_clip = THREE.AnimationClip.findByName( gltf.animations, 'SwitchCard_RobotArmature' );
+					switchCard_action = mixer.clipAction( switchCard_clip );
+					switchCard_action.clampWhenFinished = true;
+					switchCard_action.loop = THREE.LoopOnce;
+
+				}, undefined, function ( e ) {
+
+					console.error( e );
+
+	} );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				container.appendChild( renderer.domElement );
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				// stats
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+			}
+
+			//
+			// function createGUI( model, animations ) {
+			//
+			// 	const states = [ 'Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing' ];
+			// 	const emotes = [ 'Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp', 'SwitchCard_RobotArmature' ];
+			//
+			// 	gui = new GUI();
+			//
+			// 	mixer = new THREE.AnimationMixer( model );
+			//
+			// 	actions = {};
+			//
+			// 	for ( let i = 0; i < animations.length; i ++ ) {
+			//
+			// 		const clip = animations[ i ];
+			// 		const action = mixer.clipAction( clip );
+			// 		console.log( clip.name );
+			// 		actions[ clip.name ] = action;
+			//
+			// 		if ( emotes.indexOf( clip.name ) >= 0 || states.indexOf( clip.name ) >= 4 ) {
+			//
+			// 			action.clampWhenFinished = true;
+			// 			action.loop = THREE.LoopOnce;
+			//
+			// 		}
+			//
+			// 	}
+			//
+			// 	// states
+			//
+			// 	const statesFolder = gui.addFolder( 'States' );
+			//
+			// 	const clipCtrl = statesFolder.add( api, 'state' ).options( states );
+			//
+			// 	clipCtrl.onChange( function () {
+			//
+			// 		fadeToAction( api.state, 0.5 );
+			//
+			// 	} );
+			//
+			// 	statesFolder.open();
+			//
+			// 	// emotes
+			//
+			// 	const emoteFolder = gui.addFolder( 'Emotes' );
+			//
+			// 	function createEmoteCallback( name ) {
+			//
+			// 		api[ name ] = function () {
+			//
+			// 			fadeToAction( name, 0.2 );
+			//
+			// 			mixer.addEventListener( 'finished', restoreState );
+			//
+			// 		};
+			//
+			// 		emoteFolder.add( api, name );
+			//
+			// 	}
+			//
+			// 	function restoreState() {
+			//
+			// 		mixer.removeEventListener( 'finished', restoreState );
+			//
+			// 		fadeToAction( api.state, 0.2 );
+			//
+			// 	}
+			//
+			// 	for ( let i = 0; i < emotes.length; i ++ ) {
+			//
+			// 		createEmoteCallback( emotes[ i ] );
+			//
+			// 	}
+			//
+			// 	emoteFolder.open();
+			//
+			// 	// expressions
+			//
+			// 	face = model.getObjectByName( 'Head_4' );
+			//
+			// 	const expressions = Object.keys( face.morphTargetDictionary );
+			// 	const expressionFolder = gui.addFolder( 'Expressions' );
+			//
+			// 	for ( let i = 0; i < expressions.length; i ++ ) {
+			//
+			// 		expressionFolder.add( face.morphTargetInfluences, i, 0, 1, 0.01 ).name( expressions[ i ] );
+			//
+			// 	}
+			//
+			// 	activeAction = actions[ 'Walking' ];
+			// 	activeAction.play();
+			//
+			// 	expressionFolder.open();
+			//
+			// }
+			//
+			// function fadeToAction( name, duration ) {
+			//
+			// 	previousAction = activeAction;
+			// 	activeAction = actions[ name ];
+			//
+			// 	if ( previousAction !== activeAction ) {
+			//
+			// 		previousAction.fadeOut( duration );
+			//
+			// 	}
+			//
+			// 	activeAction
+			// 		.reset()
+			// 		.setEffectiveTimeScale( 1 )
+			// 		.setEffectiveWeight( 1 )
+			// 		.fadeIn( duration )
+			// 		.play();
+			//
+			// }
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				const dt = clock.getDelta();
+
+				if ( mixer ) mixer.update( dt );
+
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+
+				stats.update();
+
+			}
+
+
+		</script>
+
+	</body>
+</html>
