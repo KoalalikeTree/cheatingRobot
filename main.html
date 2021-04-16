@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Robot</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="main.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+			body {
+				color: #222;
+			}
+
+			a {
+				color: #2fa1d6;
+			}
+
+			p {
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 0 2em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="game-title">
+			<div style="padding: 20px;"><h1>Round One</h1></div>
+			<div class="game-score"><h2>Your score: 100</h2></div>
+			<div class="start"><button style="width:10vw; height:10vh" id="next-rount-btn">Next Round</button></div>
+		</div>
+		<div id="msgbox"><h2 style="margin:10px">Your guess is not correct, the correct answer is A </h2></div>
+		<div id="answer">
+			<button class="user-option">
+				<h2>What???</h2>
+			</button>
+			<button class="user-option">
+				<h2>Okay...</h2>
+			</button>
+			<button class="user-option">
+				<h2>Are you serious?</h2>
+			</button>
+		</div>
+		<div id="cards">
+			<button class="card-option">
+				<h1>A</h1>
+			</button>
+			<button class="card-option">
+				<h1>B</h1>
+			</button>
+			<button class="card-option">
+				<h1>C</h1>
+			</button>
+		</div>
+
+		<!--	Control all the ui element	-->
+		<script src="ui.js"></script>
+
+		<!--	Control all the Threejs element	-->
+		<script type="module" src="scene.js"></script>
+
+	</body>
+</html>

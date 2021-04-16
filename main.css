@@ -1,0 +1,72 @@
+.game-title{
+		position:absolute;
+		height: 50vh;
+		width:50vw;
+		background:white;
+    	left: 25vw;
+		top: 25vh;
+		border-radius: 10px;
+	}
+.game-score{
+    padding: 20px;
+}
+.start{
+    text-align: center;
+    position:relative;
+}
+#msgbox{
+    width: 500px;
+    height: 500px;
+    background-image: url(examples/models/gltf/RobotExpressive/msgbox.png);
+    background-size: contain;
+    position: fixed;
+    left: 20vh;
+    top: 5vh;
+    background-repeat: no-repeat;
+    display: none;
+}
+#answer{
+    position:absolute;
+    width:50vw;
+    left: 25vw;
+    bottom: 5vh;
+    height: 30vh;
+    text-align: center;
+    display: none;
+
+}
+.user-option{
+    width:100%;
+    height:auto;
+    background: #9effff;
+    border-radius: 10px;
+}
+#cards{
+    position:absolute;
+    width:60vw;
+    left: 20vw;
+    bottom: 5vh;
+    height: 30vh;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    display: none;
+}
+.card-option{
+    width:18vw;
+    margin:1vw;
+    background: #5A5A5A;
+    border-radius: 10px;
+}
+h1{
+    font-size: 50px;
+    text-align: center;
+    line-height: 40px;
+    padding-top:2vh;
+}
+h2{
+    text-align: center;
+    font-size: 30px;
+    padding-top:2vh;
+    padding-bottom: 2vh;
+}
