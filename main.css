@@ -1,12 +1,13 @@
 .game-title{
-		position:absolute;
-		height: 50vh;
-		width:50vw;
-		background:white;
-    	left: 25vw;
-		top: 25vh;
-		border-radius: 10px;
-	}
+    position:absolute;
+    height: 50vh;
+    width:50vw;
+    background:white;
+    left: 25vw;
+    top: 25vh;
+    border-radius: 10px;
+    display: none;
+}
 .game-score{
     padding: 20px;
 }
