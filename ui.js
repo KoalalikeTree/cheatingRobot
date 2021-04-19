@@ -1,13 +1,24 @@
-$('#cards').fadeOut(0);
+$('#cards_options').fadeOut(0);
 
-$('.card-option').click(async function(){
-    $('#cards').fadeOut(500)
-    $( '#msgbox' ).fadeIn(500); //jquery
-    $( '#answer' ).fadeIn(500);
-
+$('#begin').click(async function(){
+    $('.intro').fadeOut(500)
+    $('.round').fadeIn(200);
+    $('.round-bg').fadeIn(200);
 })
+
 $('.user-option').click(function(){
     $( '#msgbox' ).fadeOut(200)
     $('#answer').fadeOut(200)
-    $('.game-title').fadeIn(200);
+    $('.round').fadeIn(200);
+})
+
+$(window).click(function(e) {
+    if($('.round, .round-bg').css('display')==='block'){
+        $('.round, .round-bg').fadeOut(200)
+    }
+});
+
+$(".card").click(function(){
+    $(this).addClass("is-flipped")
+    setTimeout(function(){$('.card').addClass("is-flipped")},1000)
 })

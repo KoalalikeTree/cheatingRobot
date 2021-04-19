@@ -7,7 +7,6 @@ import { GLTFLoader } from './examples/jsm/loaders/GLTFLoader.js';
 
 let container, stats, clock, gui, mixer, actions, activeAction, previousAction;
 let camera, scene, renderer, model, face;
-let switchCard_clip, switchCard_action;
 let flipJoker=false
 let flipDiamond=false
 let flipClub=false
@@ -15,15 +14,17 @@ let countFlipJoker=0
 let countFlipDiamond=0
 let countFlipClub=0
 
-let switch12=false
-let switch13=false
-let switch23=false
-
 var cards
 var diamond, club, joker
-var current_order = ['diamond','joker','club']
 
-var step = 40;
+
+var step = 100;
+var round = 0;
+var switchCardsAction = [];
+var switchCardsSpeed = [];
+var cardsToSwitch;
+var accumframe = 0;
+var waitframe = 10;
 
 const pos_right = new THREE.Vector3( 1, 1.8, 3)
 const pos_left = new THREE.Vector3( -1, 1.8, 3)
@@ -33,18 +34,41 @@ const pos_list = [pos_left,pos_mid,pos_right]
 
 const api = { state: 'Walking' };
 
-$( '#next-rount-btn' ).click(async function () {
-    document.getElementsByClassName( 'game-title' )[0].style.display = "none";
-    switchCard_action.play();
-    await sleep(5000);
-    $('#cards').fadeIn(200);
-} );
+
+$(window).click(async function (e) {
+    if ($('.round, .round-bg').css('display') === 'block') {
+
+        console.log("This is ", round, " round")
+        await sleep(3000);
+        flipAllCards();
+
+        // read the game mechanism
+        step = switchCardsSpeed[round]
+        console.log("current speed is ", step)
+
+        cardsToSwitch = switchCardsAction[round]
+        console.log("current switch order is ", cardsToSwitch)
+
+        // update the index of round
+        round += 1;
+    }
+});
 
 init();
 animate();
 function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
 
 function init() {
+    // read game mechanism from game.js
+
+    for (var i = 0; i < gameMech.length; i++) {
+        var switch_actions = []
+        for  (var j = 0; j < gameMech[i].order.length; j++) {
+            switch_actions.push(gameMech[i].order[j])
+        }
+        switchCardsSpeed.push(gameMech[i].step)
+        switchCardsAction.push(switch_actions)
+    }
 
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -82,11 +106,6 @@ function init() {
     const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
     mesh.rotation.x = - Math.PI / 2;
     scene.add( mesh );
-
-    // const grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
-    // grid.material.opacity = 0.2;
-    // grid.material.transparent = true;
-    // scene.add( grid );
 
     // desk in front of robot
     createDesk();
@@ -136,15 +155,6 @@ function init() {
         if (event.code === 'KeyJ') {
           flipJoker=true;
           countFlipJoker=0
-        }
-        if (event.code === 'KeyQ') {
-            switch12=true;
-        }
-        if (event.code === 'KeyW') {
-            switch13=true;
-        }
-        if (event.code === 'KeyE') {
-            switch23=true;
         }
         if (event.code === 'KeyR') {
             fadeToAction('Running',0.5)
@@ -249,30 +259,30 @@ function createGUI( model, animations ) {
 
 			}
 
-			function fadeToAction( name, duration ) {
+function fadeToAction( name, duration ) {
 
-                if (!activeAction){
-                    console.log(activeAction);
-                    previousAction = actions[ name ];
-                }else{
-                    previousAction = activeAction;
-                }
-				activeAction = actions[ name ];
+    if (!activeAction){
+        console.log(activeAction);
+        previousAction = actions[ name ];
+    }else{
+        previousAction = activeAction;
+    }
+    activeAction = actions[ name ];
 
-				if ( previousAction !== activeAction ) {
+    if ( previousAction !== activeAction ) {
 
-					previousAction.fadeOut( duration );
+        previousAction.fadeOut( duration );
 
-				}
+    }
 
-				activeAction
-					.reset()
-					.setEffectiveTimeScale( 1 )
-					.setEffectiveWeight( 1 )
-					.fadeIn( duration )
-					.play();
+    activeAction
+        .reset()
+        .setEffectiveTimeScale( 1 )
+        .setEffectiveWeight( 1 )
+        .fadeIn( duration )
+        .play();
 
-			}
+}
 
 
 function createDesk(){
@@ -394,55 +404,76 @@ function switchOrder(switch1, switch2){
     current_order[switch1] = current_order[switch2]
     current_order[switch2] = temp
     reassignPos();
+    console.log(current_order)
+
+    if (cardsToSwitch.length === 1){
+        document.getElementById('left-card').classList.add(current_order[0])
+        document.getElementById('middle-card').classList.add(current_order[1])
+        document.getElementById('right-card').classList.add(current_order[2])
+        $("#cards_options").fadeIn(800)
+    }
+    cardsToSwitch.shift()
+    accumframe=0
 }
+
+function flipAllCards(){
+    flipClub=true;
+    countFlipClub=0;
+    flipDiamond=true;
+    countFlipDiamond=0;
+    flipJoker=true;
+    countFlipJoker=0;
+}
+
 function animate() {
     // flip card
-    if (flipClub){
-        if (countFlipClub<=179){flipCard('club',4)
-        }else{flipClub=false}
-    }
-    if (flipDiamond){
-        if (countFlipDiamond<=179){flipCard('diamond',4)}
-        else{flipDiamond=false}
-    }
-    if (flipJoker){
-        if (countFlipJoker<=179){flipCard('joker',4)}
-        else{
-            flipJoker=false
+    if (flipClub || flipDiamond || flipJoker){
+        if (flipClub){
+            if (countFlipClub<=179){flipCard('club',4)
+            }else{flipClub=false}
+        }
+        if (flipDiamond){
+            if (countFlipDiamond<=179){flipCard('diamond',4)}
+            else{flipDiamond=false}
+        }
+        if (flipJoker){
+            if (countFlipJoker<=179){flipCard('joker',4)}
+            else{
+                flipJoker=false
+            }
+        }
+    }else{
+        if (cardsToSwitch){
+            accumframe+=1;
+            if (accumframe>waitframe){
+                if (cardsToSwitch[0] === "1") {
+                    if (cards[current_order[0]].position.x <= pos_mid.x){
+                        switchCard(cards[current_order[0]], cards[current_order[1]],0,1,step)
+                    }
+                    else{
+                        // switch ground truth order
+                        switchOrder(0,1)
+                        }
+                }
+                if (cardsToSwitch[0] === "2"){
+                    if (cards[current_order[0]].position.x <= pos_right.x){
+                        switchCard(cards[current_order[0]], cards[current_order[2]],0,2,step)}
+                    else{
+                        // switch ground truth order
+                        switchOrder(0,2)
+                    }
+                }
+                if (cardsToSwitch[0] === "3"){
+                    if (cards[current_order[1]].position.x <= pos_right.x){
+                        switchCard(cards[current_order[1]], cards[current_order[2]],1,2,step)}
+                    else{
+                        // switch ground truth order
+                        switchOrder(1,2)
+                    }
+                }
+            }
         }
     }
-
-    // switch position
-    if (switch12){
-        if (cards[current_order[0]].position.x <= pos_mid.x){
-            switchCard(cards[current_order[0]], cards[current_order[1]],0,1,step)}
-        else{
-            switch12=false
-            // switch ground truth order
-            switchOrder(0,1)
-        }
-    }
-
-    if (switch13){
-        if (cards[current_order[0]].position.x <= pos_right.x){
-            switchCard(cards[current_order[0]], cards[current_order[2]],0,2,step)}
-        else{
-            switch13=false
-            // switch ground truth order
-            switchOrder(0,2)
-        }
-    }
-
-    if (switch23){
-        if (cards[current_order[1]].position.x <= pos_right.x){
-            switchCard(cards[current_order[1]], cards[current_order[2]],1,2,step)}
-        else{
-            switch23=false
-            // switch ground truth order
-            switchOrder(1,2)
-        }
-    }
-
 
     const dt = clock.getDelta();
 

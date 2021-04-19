@@ -24,10 +24,13 @@
 	</head>
 
 	<body>
-		<div class="game-title">
-			<div style="padding: 20px;"><h1>Round One</h1></div>
-			<div class="game-score"><h2>Your score: 100</h2></div>
-			<div class="start"><button style="width:10vw; height:10vh" id="next-rount-btn">Next Round</button></div>
+		<div class="round-bg"></div>
+		<div class="round" style="opacity: 1;background-color: transparent">
+			<div style="padding: 5vh;">
+				<span class="title">Rusty <br><br></span>
+				<span class="dialogueText">Here comes round 1 of the game !</span>
+			</div>
+
 		</div>
 		<div id="msgbox"><h2 style="margin:10px">Your guess is not correct, the correct answer is A </h2></div>
 		<div id="answer">
@@ -41,22 +44,26 @@
 				<h2>Are you serious?</h2>
 			</button>
 		</div>
-		<div id="cards">
-			<button class="card-option">
-				<h1>A</h1>
-			</button>
-			<button class="card-option">
-				<h1>B</h1>
-			</button>
-			<button class="card-option">
-				<h1>C</h1>
-			</button>
+		<div id="cards_options">
+			<div class="card">
+				<div class="card__face card__face--back"></div>
+				<div class="card__face" id="left-card"></div>
+		    </div>
+			<div class="card">
+				<div class="card__face card__face--back"></div>
+				<div class="card__face" id="middle-card"></div>
+		    </div>
+			<div class="card">
+				<div class="card__face card__face--back"></div>
+				<div class="card__face" id="right-card"></div>
+		    </div>
 		</div>
+
 		<div class="intro">
 			<div class="textmask">
-				<div id="opening-dialogue">
-					Welcome to three-card monte!<br><br>
-					<span id="secondText">The objective of the game is to correctly identify where the joker card is located.<br>
+				<div class="title">
+					<span class="title">Welcome to three-card monte!<br><br></span>
+					<span class="secondText">The objective of the game is to correctly identify where the joker card is located.<br>
 						To play, the player will see three cards faced up, one of which is a joker card. Rusty the robot, 
 						will then place the three cards face down on the table and will rearrange them.<br>
 						The player is then prompted to select one of the three cards. If the player correctly identifies the joker card, they 
@@ -66,16 +73,15 @@
 					<br><br>Please press begin to start the game.</span>
 				</div>
 			</div>
-			<button class="begin">
+			<button id="begin">
 				BEGIN!
 			</button>
 		</div>
-
-		<!--	Control all the ui element	-->
-		<script src="ui.js"></script>
-
+		<!--	Game Mechanism	-->
+		<script src="game.js"></script>
 		<!--	Control all the Threejs element	-->
 		<script type="module" src="scene.js"></script>
-
+		<!--	Control all the ui element	-->
+		<script src="ui.js"></script>
 	</body>
 </html>
