@@ -1,3 +1,10 @@
+.right-top-title{
+    position: fixed;
+    right: 0vw;
+    top: 3vh;
+    display: flex;
+    flex-direction: column;
+}
 .round-bg{
     position: absolute;
     height: 30vh;
@@ -6,7 +13,6 @@
     left: 25vw;
     top: 60vh;
     border-radius: 10px;
-    display: none;
     opacity: 0.95;
 }
 .round{
@@ -17,38 +23,46 @@
     left: 25vw;
     top: 60vh;
     border-radius: 10px;
-    display: none;
     opacity: 1;
 }
-.game-score{
-    padding: 20px;
-}
-#msgbox{
-    width: 500px;
-    height: 500px;
-    background-image: url(examples/models/gltf/RobotExpressive/msgbox.png);
-    background-size: contain;
+.robot-msg{
     position: fixed;
-    left: 20vh;
-    top: 5vh;
-    background-repeat: no-repeat;
-    display: none;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    justify-items: center;
+    top:3vh;
+    border-radius: 1vh;
+}
+.msg-box{
+    width:60vw;
+    height:10vh;
+    background-color: white;
+    display: flex;
+    border-radius: 2vh;
 }
 #answer{
-    position:absolute;
-    width:50vw;
-    left: 25vw;
+    position: absolute;
+    width: 70vw;
+    left: 15vw;
     bottom: 5vh;
-    height: 30vh;
+    height: 10vh;
     text-align: center;
-    display: none;
-
+    display: flex;
 }
+
 .user-option{
-    width:100%;
-    height:auto;
-    background: #9effff;
-    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    margin: 1vh;
+    border-radius: 1vh;
+    box-shadow: 4px 4px 8px hsl(0deg 0% 60%);
+    background-color: #0058DB;
+    border-color: #0058DB;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
 }
 #cards_options{
     position:absolute;
@@ -125,6 +139,20 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+#happy{
+    background-image: url("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/grinning-face-with-big-eyes_1f603.png");
+}
+#neutral{
+    background-image: url("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/neutral-face_1f610.png");
+}
+#angry{
+    background-image: url("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/angry-face_1f620.png");
+}
+.emoji{
+    height: 4vh;
+    width: 4vh;
+    background-size: 100% 100%;
+}
 
 h1{
     font-size: 50px;
@@ -135,8 +163,8 @@ h1{
 h2{
     text-align: center;
     font-size: 30px;
-    padding-top:2vh;
-    padding-bottom: 2vh;
+    color: white;
+    padding-top: 0.8vh;
 }
 .title{
     font-family: sans-serif;
@@ -148,6 +176,9 @@ h2{
     margin: auto;
     padding: 3vh;
     opacity: 1;
+}
+.cornerText{
+    color:dimgrey;
 }
 .robotname{
     padding: 3vw;
@@ -163,10 +194,21 @@ h2{
     padding: 3vh;
     opacity: 1;
 }
-.dialogueText{
+#dialogueText{
     font-weight: 400;
     font-family: sans-serif;
-    font-size: 1.8vw;
+    font-size: 2.3vw;
+    font-style: normal;
+    line-height: 2.3vw;
+    color: #000000;
+    margin: auto;
+    padding: 3vh;
+    opacity: 1;
+}
+#robot-words {
+    font-weight: 400;
+    font-family: sans-serif;
+    font-size: 2.3vw;
     font-style: normal;
     line-height: 2.3vw;
     color: #000000;

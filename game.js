@@ -2,72 +2,72 @@ var current_order = ['diamond','joker','club']
 const gameMech = [
   {
     "round": 1,
-    "order": '12',
-    "step": 100
+    "order": '1232',
+    "step": 40,
   },
   {
     "round": 2,
-    "order": '123',
-    "step": 40
+    "order": '32123',
+    "step": 30
   },
   {
     "round": 3,
-    "order": '123',
-    "step": 40
+    "order": '2121323',
+    "step": 20
   },
   {
     "round": 4,
-    "order": '123',
-    "step": 40
+    "order": '23132123',
+    "step": 15
   },
   {
     "round": 5,
-    "order": '123',
-    "step": 40
+    "order": '3211213',
+    "step": 30
   },
   {
     "round": 6,
-    "order": '123',
-    "step": 40
+    "order": '1232131',
+    "step": 30
   },
   {
     "round": 7,
-    "order": '123',
-    "step": 40
+    "order": '1213233',
+    "step": 30
   },
   {
     "round": 8,
-    "order": '123',
-    "step": 40
+    "order": '321232121',
+    "step": 30
   },
   {
     "round": 9,
-    "order": '123',
-    "step": 40
+    "order": '1232132123',
+    "step": 20
   },  {
     "round": 10,
-    "order": '123',
-    "step": 40
+    "order": '123213123',
+    "step": 20
   },
   {
     "round": 11,
     "order": '123',
-    "step": 40
+    "step": 20
   },
   {
     "round": 12,
     "order": '123',
-    "step": 40
+    "step": 15
   },
   {
     "round": 13,
     "order": '123',
-    "step": 40
+    "step": 15
   },
   {
     "round": 14,
     "order": '123',
-    "step": 40
+    "step": 15
   },
   {
     "round": 15,

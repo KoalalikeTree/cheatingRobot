@@ -24,36 +24,52 @@
 	</head>
 
 	<body>
+		<div class="right-top-title">
+			<div style="text-align: right">
+				<span class="title cornerText" id="round-name">Round 1</span>
+			</div>
+			<div style="text-align: right">
+				<span class="title cornerText" id="second-left">5 Seconds Left</span>
+			</div>
+		</div>
 		<div class="round-bg"></div>
 		<div class="round" style="opacity: 1;background-color: transparent">
 			<div style="padding: 5vh;">
 				<span class="title">Rusty <br><br></span>
-				<span class="dialogueText">Here comes round 1 of the game !</span>
+				<span id="dialogueText">Here comes round 1 of the game !</span>
 			</div>
-
 		</div>
-		<div id="msgbox"><h2 style="margin:10px">Your guess is not correct, the correct answer is A </h2></div>
+		<div class="robot-msg">
+			<div class="msg-box">
+				<span id="robot-words">
+					Which one do you think is the Joker card?
+				</span>
+			</div>
+		</div>
 		<div id="answer">
 			<button class="user-option">
-				<h2>What???</h2>
+				<div class="emoji" id="happy"></div>
+				<h2> Yeah! </h2>
 			</button>
 			<button class="user-option">
-				<h2>Okay...</h2>
+				<div class="emoji" id="neutral"></div>
+				<h2> Sounds fair </h2>
 			</button>
 			<button class="user-option">
-				<h2>Are you serious?</h2>
+				<div class="emoji" id="angry"></div>
+				<h2> Are you serious?</h2>
 			</button>
 		</div>
 		<div id="cards_options">
-			<div class="card">
+			<div class="card" id="left-card-container">
 				<div class="card__face card__face--back"></div>
 				<div class="card__face" id="left-card"></div>
 		    </div>
-			<div class="card">
+			<div class="card" id="middle-card-container">
 				<div class="card__face card__face--back"></div>
 				<div class="card__face" id="middle-card"></div>
 		    </div>
-			<div class="card">
+			<div class="card" id="right-card-container">
 				<div class="card__face card__face--back"></div>
 				<div class="card__face" id="right-card"></div>
 		    </div>

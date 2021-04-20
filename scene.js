@@ -19,7 +19,6 @@ var diamond, club, joker
 
 
 var step = 100;
-var round = 0;
 var switchCardsAction = [];
 var switchCardsSpeed = [];
 var cardsToSwitch;
@@ -35,24 +34,28 @@ const pos_list = [pos_left,pos_mid,pos_right]
 const api = { state: 'Walking' };
 
 
-$(window).click(async function (e) {
-    if ($('.round, .round-bg').css('display') === 'block') {
+$('.round, .round-bg').click(async function (e) {
 
-        console.log("This is ", round, " round")
-        await sleep(3000);
-        flipAllCards();
+    await sleep(8000);
+    flipAllCards();
+    fadeToAction('Sitting',0.5)
 
-        // read the game mechanism
-        step = switchCardsSpeed[round]
-        console.log("current speed is ", step)
+    // read the game mechanism
+    step = switchCardsSpeed[round]
+    console.log("current speed is ", step)
 
-        cardsToSwitch = switchCardsAction[round]
-        console.log("current switch order is ", cardsToSwitch)
+    cardsToSwitch = switchCardsAction[round]
+    console.log("current switch order is ", cardsToSwitch)
 
-        // update the index of round
-        round += 1;
-    }
+    // update the index of round
+    round += 1;
 });
+
+$(".card").click(function(){
+    if (userSelectionState){
+        flipAllCards();
+        userSelectionState = false;}
+})
 
 init();
 animate();
@@ -144,17 +147,8 @@ function init() {
 
     //test flip card
     document.addEventListener('keydown', function(event) {
-        if (event.code === 'KeyC') {
-          flipClub=true;
-          countFlipClub=0
-        }
-        if (event.code === 'KeyD') {
-          flipDiamond=true;
-          countFlipDiamond=0
-        }
-        if (event.code === 'KeyJ') {
-          flipJoker=true;
-          countFlipJoker=0
+        if (event.code === 'KeyA') {
+          fadeToAction( 'ThumbsUp', 0.2 );
         }
         if (event.code === 'KeyR') {
             fadeToAction('Running',0.5)
@@ -179,6 +173,7 @@ function createGUI( model, animations ) {
 				// gui = new GUI();
 
 				mixer = new THREE.AnimationMixer( model );
+				// mixer.addEventListener( 'finished', restoreState );
 
 				actions = {};
 
@@ -229,7 +224,7 @@ function createGUI( model, animations ) {
 
 					mixer.removeEventListener( 'finished', restoreState );
 
-					fadeToAction( api.state, 0.2 );
+					fadeToAction( 'Idle', 0.2 );
 
 				}
 
@@ -407,10 +402,16 @@ function switchOrder(switch1, switch2){
     console.log(current_order)
 
     if (cardsToSwitch.length === 1){
+        console.log("set userSelectionState to true")
+        userSelectionState = true
+        fadeToAction('Idle',0.5)
         document.getElementById('left-card').classList.add(current_order[0])
         document.getElementById('middle-card').classList.add(current_order[1])
         document.getElementById('right-card').classList.add(current_order[2])
         $("#cards_options").fadeIn(800)
+        $(".robot-msg").fadeIn(800)
+        $("#robot-words").text("Which one do you think is the Joker card?")
+
     }
     cardsToSwitch.shift()
     accumframe=0
@@ -427,6 +428,14 @@ function flipAllCards(){
 
 function animate() {
     // flip card
+    if (trigger_thumbsUp){
+        fadeToAction('ThumbsUp',0.2);
+        trigger_thumbsUp=false;
+    }
+    if (trigger_No){
+        fadeToAction('No',0.2);
+        trigger_No=false;
+    }
     if (flipClub || flipDiamond || flipJoker){
         if (flipClub){
             if (countFlipClub<=179){flipCard('club',4)
