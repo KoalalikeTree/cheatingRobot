@@ -14,6 +14,7 @@ var yourScore = 0
 var isTutorial = false
 var time1,time2,time3,time4,time5,time6,time7,time8,time9,time10
 $('#cards_options, .robot-msg, .round, .round-bg, #answer, #react-second-left, #continue-btn').fadeOut(0);
+var userReactList = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 $('#begin').click(async function(){
     $('.intro').fadeOut(500)
@@ -216,7 +217,7 @@ function announceAnswer(cardId){
                     // if the round is pushed too much to the next cheating round, skip
                     verbalCheatRoundId[0]+=1}else{verbalCheatRoundId.shift()}
             }else{
-                actionCheatRoundId.shift()
+                verbalCheatRoundId.shift()
                 userLose()
             }
             robotReaction(3000, cardId,true)
@@ -264,13 +265,17 @@ function finalRound(){
         $('#round-name').text("WE BOTH WIN!")
     }
     trigger_Dance = true
+    var reactText = ""
+    for (i=0; i<userReactList.length; i++){
+        reactText += userReactList[i];
+    }
     setTimeout(function (){
         $("#robot-words").text("Please copy paste the following number and paste it to the survey question, please DONT close this page")
-    }, 7000)
+    }, 5000)
     setTimeout(function (){
-        $("#robot-words").text("Copy this number >> "+ 12341 + " << Then click continue")
+        $("#robot-words").text("Copy this number >> "+ reactText + " << Then click continue")
         $("#continue-btn").fadeIn(200)
-    }, 14000)
+    }, 12000)
 }
 
 function userReact(){
@@ -284,7 +289,6 @@ function userReact(){
     }
     $("#answer").fadeOut(500)
     $("#react-second-left").fadeOut(0)
-    console.log("haha")
 }
 $("#left-card-container").click(function(){
     announceAnswer(0)
@@ -294,4 +298,16 @@ $("#middle-card-container").click(function(){
 })
 $("#right-card-container").click(function(){
     announceAnswer(2)
+})
+$("#happy-btn").click(function (){
+    if (round>0 && round<=20){userReactList[round-1]=1}
+    console.log(userReactList)
+})
+$("#neutral-btn").click(function (){
+    if (round>0 && round<=20){userReactList[round-1]=2}
+    console.log(userReactList)
+})
+$("#angry-btn").click(function (){
+    if (round>0 && round<=20){userReactList[round-1]=3}
+    console.log(userReactList)
 })

@@ -7,7 +7,7 @@ const gameMech = [
   },
   {
     "round": 1,
-    "order": '132',
+    "order": '312',
     "step": 40,
   },
   {
