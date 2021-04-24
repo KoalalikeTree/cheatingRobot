@@ -1,7 +1,14 @@
 .right-top-title{
     position: fixed;
     right: 0vw;
-    top: 3vh;
+    top: 43vh;
+    display: flex;
+    flex-direction: column;
+}
+.score-title{
+    position: fixed;
+    left: 0vw;
+    top: 43vh;
     display: flex;
     flex-direction: column;
 }
@@ -36,19 +43,19 @@
 }
 .msg-box{
     width:60vw;
-    height:10vh;
+    height:15vh;
     background-color: white;
     display: flex;
     border-radius: 2vh;
 }
 #answer{
     position: absolute;
-    width: 70vw;
-    left: 15vw;
-    bottom: 5vh;
+    width: 50vw;
+    left: 25vw;
+    bottom: 20vh;
     height: 10vh;
     text-align: center;
-    display: flex;
+    display: block;
 }
 
 .user-option{
@@ -65,14 +72,12 @@
     justify-content: center;
 }
 #cards_options{
-    position:absolute;
-    width:60vw;
-    left: 20vw;
-    bottom: 20vh;
+    position: absolute;
+    width: 46vw;
+    left: 28vw;
+    bottom: 13vh;
     height: 30vh;
     text-align: center;
-    display: flex;
-    flex-direction: row;
     justify-content: center;
 }
 .card-option{
@@ -85,13 +90,14 @@
     box-shadow: 4px 4px 8px hsl(0, 0%, 60%);
 }
 .card {
-    width: 26vh;
+    float:left;
+    width: 31%;
     height: 38vh;
     transition: transform 1s;
     transform-style: preserve-3d;
     cursor: pointer;
     position: relative;
-    margin: 1vh;
+    margin: 1%;
     box-shadow: 12px 12px rgb(0 0 0 / 20%);
     border-radius: 10px;
 }
@@ -179,6 +185,8 @@ h2{
 }
 .cornerText{
     color:dimgrey;
+    font-size: 6vh;
+    line-height: 6vh;
 }
 .robotname{
     padding: 3vw;

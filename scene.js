@@ -13,10 +13,11 @@ let flipClub=false
 let countFlipJoker=0
 let countFlipDiamond=0
 let countFlipClub=0
+var cameraTransEnlarge = false
+var cameraTransBack = false
 
 var cards
 var diamond, club, joker
-
 
 var step = 100;
 var switchCardsAction = [];
@@ -35,25 +36,32 @@ const api = { state: 'Walking' };
 
 
 $('.round, .round-bg').click(async function (e) {
-
-    await sleep(8000);
+    if (isTutorial){
+        await sleep(12000);
+    }else{
+        await sleep(8000);
+    }
     flipAllCards();
     fadeToAction('Sitting',0.5)
 
-    // read the game mechanism
-    step = switchCardsSpeed[round]
-    console.log("current speed is ", step)
-
-    cardsToSwitch = switchCardsAction[round]
-    console.log("current switch order is ", cardsToSwitch)
+    cameraTransEnlarge = true;
 
     // update the index of round
-    round += 1;
+    round+=1
+
+    // read the game mechanism
+    step = switchCardsSpeed[round]
+    console.log("step=", step)
+
+    cardsToSwitch = switchCardsAction[round]
+
+
 });
 
 $(".card").click(function(){
     if (userSelectionState){
         flipAllCards();
+        reassignPos();
         userSelectionState = false;}
 })
 
@@ -61,7 +69,7 @@ init();
 animate();
 function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
 
-function init() {
+function init(){
     // read game mechanism from game.js
 
     for (var i = 0; i < gameMech.length; i++) {
@@ -145,24 +153,11 @@ function init() {
     stats = new Stats();
     container.appendChild( stats.dom );
 
-    //test flip card
-    document.addEventListener('keydown', function(event) {
-        if (event.code === 'KeyA') {
-          fadeToAction( 'ThumbsUp', 0.2 );
-        }
-        if (event.code === 'KeyR') {
-            fadeToAction('Running',0.5)
-        }
-        if (event.code === 'KeyT') {
-            fadeToAction('Idle',0.5)
-        }
-        if (event.code === 'KeyY') {
-            fadeToAction('Dance',0.5)
-        }
-        if (event.code === 'KeyU') {
-            fadeToAction('Death',0.5)
-        }
-});
+    tutorial();
+}
+
+function tutorial(){
+    isTutorial = true
 }
 
 function createGUI( model, animations ) {
@@ -216,7 +211,7 @@ function createGUI( model, animations ) {
 
 					};
 
-					emoteFolder.add( api, name );
+					// emoteFolder.add( api, name );
 
 				}
 
@@ -278,7 +273,6 @@ function fadeToAction( name, duration ) {
         .play();
 
 }
-
 
 function createDesk(){
     const table_surface = new THREE.BoxGeometry( 10, 0.5, 2 );
@@ -371,8 +365,12 @@ function switchCard(mesh1,mesh2,position1,position2,step){
     mesh1.position.x += horizentalStep;
     mesh2.position.x -= horizentalStep;
     if ((mesh2.position.x - pos_list[position1].x) <= ((pos_list[position2].x - pos_list[position1].x)/2)){
-        mesh1.position.y -= horizentalStep/2;
-        mesh2.position.y -= horizentalStep/3;
+        if (mesh1.position.y > pos_left.y){
+            mesh1.position.y -= horizentalStep/2;
+        }
+        if (mesh2.position.y > pos_left.y){
+            mesh2.position.y -= horizentalStep/3;
+        }
     }else{
         mesh1.position.y += horizentalStep/2;
         mesh2.position.y += horizentalStep/3;
@@ -395,9 +393,7 @@ function reassignPos(){
 }
 
 function switchOrder(switch1, switch2){
-    var temp = current_order[switch1]
-    current_order[switch1] = current_order[switch2]
-    current_order[switch2] = temp
+    switchGroundTruth(switch1,switch2)
     reassignPos();
     console.log(current_order)
 
@@ -408,6 +404,7 @@ function switchOrder(switch1, switch2){
         document.getElementById('left-card').classList.add(current_order[0])
         document.getElementById('middle-card').classList.add(current_order[1])
         document.getElementById('right-card').classList.add(current_order[2])
+        cameraTransBack = true
         $("#cards_options").fadeIn(800)
         $(".robot-msg").fadeIn(800)
         $("#robot-words").text("Which one do you think is the Joker card?")
@@ -428,6 +425,14 @@ function flipAllCards(){
 
 function animate() {
     // flip card
+    if (cameraTransEnlarge) {
+        if (camera.position.z > 8 && camera.position.z <= 10.1){camera.translateZ( - 0.05 );}
+        else if (camera.position.z <= 8){cameraTransEnlarge=false}
+    }
+    if (cameraTransBack) {
+        if (camera.position.z > 7.9 && camera.position.z <= 10){camera.translateZ( + 0.05 );}
+        else if (camera.position.z >= 10){cameraTransBack=false}
+    }
     if (trigger_thumbsUp){
         fadeToAction('ThumbsUp',0.2);
         trigger_thumbsUp=false;

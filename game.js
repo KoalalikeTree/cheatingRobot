@@ -1,102 +1,107 @@
 var current_order = ['diamond','joker','club']
 const gameMech = [
   {
+    "round": 0,
+    "order": '13',
+    "step": 30,
+  },
+  {
     "round": 1,
-    "order": '1232',
-    "step": 40,
+    "order": '132',
+    "step": 15,
   },
   {
     "round": 2,
     "order": '32123',
-    "step": 30
+    "step": 40
   },
   {
     "round": 3,
-    "order": '2121323',
-    "step": 20
+    "order": '212132',
+    "step": 40
   },
   {
     "round": 4,
-    "order": '23132123',
-    "step": 15
+    "order": '23132121',
+    "step": 40
   },
   {
     "round": 5,
-    "order": '3211213',
-    "step": 30
+    "order": '321231321',
+    "step": 40
   },
   {
     "round": 6,
-    "order": '1232131',
+    "order": '1232131321',
     "step": 30
   },
   {
     "round": 7,
-    "order": '1213233',
+    "order": '12132312131',
     "step": 30
   },
   {
     "round": 8,
-    "order": '321232121',
+    "order": '321232121321',
     "step": 30
   },
   {
     "round": 9,
-    "order": '1232132123',
-    "step": 20
+    "order": '12321321232131',
+    "step": 30
   },  {
     "round": 10,
-    "order": '123213123',
-    "step": 20
+    "order": '3212321213212131',
+    "step": 30
   },
   {
     "round": 11,
-    "order": '123',
+    "order": '32132122132123131',
     "step": 20
   },
   {
     "round": 12,
-    "order": '123',
-    "step": 15
+    "order": '12332132123123212',
+    "step": 20
   },
   {
     "round": 13,
-    "order": '123',
-    "step": 15
+    "order": '1231232123321321231',
+    "step": 20
   },
   {
     "round": 14,
-    "order": '123',
-    "step": 15
+    "order": '32123321232123212311',
+    "step": 20
   },
   {
     "round": 15,
-    "order": '123',
-    "step": 40
+    "order": '321233212113212321231',
+    "step": 20
   },
   {
     "round": 16,
-    "order": '123',
-    "step": 40
+    "order": '1231212132112332132131',
+    "step": 15
   },
   {
     "round": 17,
-    "order": '123',
-    "step": 40
+    "order": '12312312323123212321232',
+    "step": 15
   },
   {
     "round": 18,
-    "order": '123',
-    "step": 40
+    "order": '12331213122123231232132',
+    "step": 15
   },
   {
     "round": 19,
-    "order": '123',
-    "step": 40
+    "order": '1231231232312321232123212',
+    "step": 15
   },
   {
     "round": 20,
-    "order": '123',
-    "step": 40
+    "order": '23123212321232112312312321',
+    "step": 15
   }
 ]
