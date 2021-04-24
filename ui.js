@@ -7,8 +7,8 @@ var mytime;
 var trigger_thumbsUp = false
 var trigger_No = false
 var trigger_Dance = false
-let actionCheatRoundId = [2,12]
-let verbalCheatRoundId = [3,16]
+let actionCheatRoundId = [4,12]
+let verbalCheatRoundId = [8,16]
 var robotScore = 0
 var yourScore = 0
 var isTutorial = false
