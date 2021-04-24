@@ -54,8 +54,6 @@ $('.round, .round-bg').click(async function (e) {
     console.log("step=", step)
 
     cardsToSwitch = switchCardsAction[round]
-
-
 });
 
 $(".card").click(function(){
@@ -440,6 +438,10 @@ function animate() {
     if (trigger_No){
         fadeToAction('No',0.2);
         trigger_No=false;
+    }
+    if (trigger_Dance){
+        fadeToAction('Running',0.2);
+        trigger_Dance=false;
     }
     if (flipClub || flipDiamond || flipJoker){
         if (flipClub){

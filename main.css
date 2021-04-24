@@ -43,7 +43,6 @@
 }
 .msg-box{
     width:60vw;
-    height:15vh;
     background-color: white;
     display: flex;
     border-radius: 2vh;
@@ -241,6 +240,30 @@ h2{
     background: rgba(255, 255, 255, 0.95);
 }
 #begin{
+    width: 30vw;
+    height: 7vw;
+    margin-top: 1%;
+    margin-left: 35%;
+    background: #0058DB;
+    border-radius: 0.5vh;
+    box-shadow: 0px 4px 4px rgb(0 0 0 25%);
+
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: 3vw;
+    font-style: normal;
+    font-weight: bold;
+
+    color: #FFFFFF;
+}
+
+.survey{
+    position: fixed;
+    bottom: 10vh;
+    width: 100%;
+}
+
+#continue-btn{
     width: 30vw;
     height: 7vw;
     margin-top: 1%;

@@ -6,13 +6,14 @@ var round = -1;
 var mytime;
 var trigger_thumbsUp = false
 var trigger_No = false
+var trigger_Dance = false
 let actionCheatRoundId = [2,12]
 let verbalCheatRoundId = [3,16]
 var robotScore = 0
 var yourScore = 0
 var isTutorial = false
 var time1,time2,time3,time4,time5,time6,time7,time8,time9,time10
-$('#cards_options, .robot-msg, .round, .round-bg, #answer, #react-second-left').fadeOut(0);
+$('#cards_options, .robot-msg, .round, .round-bg, #answer, #react-second-left, #continue-btn').fadeOut(0);
 
 $('#begin').click(async function(){
     $('.intro').fadeOut(500)
@@ -56,7 +57,6 @@ $('.round, .round-bg').click(function(e) {
         setTimeout(function (){$("#cards_options").fadeOut(200);$("#card-second-left").fadeOut(0);},7000)
         setTimeout(function(){$("#robot-words").text("...and rearrange them. Remember to not lose focus on the JOKER card")},7000)
     }
-
 });
 
 function countdown(seconds){
@@ -251,11 +251,38 @@ function announceAnswer(cardId){
         },waitTime+10000)
         mytime = setTimeout(function(){userReact()},waitTime+15000)}
 }
+
+function finalRound(){
+    if (yourScore>robotScore){
+        $("#robot-words").text("That's all! You won "+yourScore+" out of 20. You won the overall game. I lose! Thank you for playing the game with me!")
+        $('#round-name').text("YOU WIN!")
+    }else if(yourScore<robotScore){
+        $("#robot-words").text("That's all! You Lose "+yourScore+" out of 20. You won the overall game. I win! Thank you for playing the game with me!")
+        $('#round-name').text("YOU LOSE!")
+    }else{
+        $("#robot-words").text("That's all! You Lose "+yourScore+" out of 20. It's a win-win! Thank you for playing the game with me!")
+        $('#round-name').text("WE BOTH WIN!")
+    }
+    trigger_Dance = true
+    setTimeout(function (){
+        $("#robot-words").text("Please copy paste the following number and paste it to the survey question, please DONT close this page")
+    }, 7000)
+    setTimeout(function (){
+        $("#robot-words").text("Copy this number >> "+ 12341 + " << Then click continue")
+        $("#continue-btn").fadeIn(200)
+    }, 14000)
+}
+
 function userReact(){
-    $('.round, .round-bg').fadeIn(200);
-    $("#answer").fadeOut(500)
-    var round_text =round+1
+    if (round<20){
+        $('.round, .round-bg').fadeIn(200);
+        var round_text =round+1
     $('#round-name').text('Round '+ round_text + "/20")
+    }
+    else{
+        finalRound()
+    }
+    $("#answer").fadeOut(500)
     $("#react-second-left").fadeOut(0)
     console.log("haha")
 }

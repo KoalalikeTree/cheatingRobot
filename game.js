@@ -2,13 +2,13 @@ var current_order = ['diamond','joker','club']
 const gameMech = [
   {
     "round": 0,
-    "order": '13',
-    "step": 30,
+    "order": '12',
+    "step": 40,
   },
   {
     "round": 1,
     "order": '132',
-    "step": 15,
+    "step": 40,
   },
   {
     "round": 2,
