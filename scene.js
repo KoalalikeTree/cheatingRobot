@@ -42,7 +42,7 @@ $('.round, .round-bg').click(async function (e) {
         await sleep(8000);
     }
     flipAllCards();
-    fadeToAction('Sitting',0.5)
+    fadeToAction('Jump',0.5)
 
     cameraTransEnlarge = true;
 
@@ -137,7 +137,7 @@ function init(){
 
         console.error( e );
 
-} );
+    } );
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -247,7 +247,7 @@ function createGUI( model, animations ) {
 
 			}
 
-function fadeToAction( name, duration ) {
+export function fadeToAction( name, duration ) {
 
     if (!activeAction){
         console.log(activeAction);
@@ -435,6 +435,10 @@ function animate() {
         fadeToAction('ThumbsUp',0.2);
         trigger_thumbsUp=false;
     }
+    if (trigger_jump) {
+        fadeToAction('Jump',0.5);
+        trigger_jump=false;
+    }
     if (trigger_No){
         fadeToAction('No',0.2);
         trigger_No=false;
@@ -442,6 +446,10 @@ function animate() {
     if (trigger_Dance){
         fadeToAction('Running',0.2);
         trigger_Dance=false;
+    }
+    if (trigger_Wave){
+        fadeToAction('Wave',0.2);
+        trigger_Wave=false;
     }
     if (flipClub || flipDiamond || flipJoker){
         if (flipClub){
@@ -460,6 +468,7 @@ function animate() {
         }
     }else{
         if (cardsToSwitch){
+            // fadeToAction('ThumbsUp',0.2);
             accumframe+=1;
             if (accumframe>waitframe){
                 if (cardsToSwitch[0] === "1") {

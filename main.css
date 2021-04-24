@@ -50,7 +50,7 @@
 #answer{
     position: absolute;
     width: 50vw;
-    left: 25vw;
+    left: 37.5vw;
     bottom: 20vh;
     height: 10vh;
     text-align: center;
@@ -58,8 +58,8 @@
 }
 
 .user-option{
-    width: 100%;
-    height: auto;
+    width: 50%;
+    height: 3.5vw;
     margin: 1vh;
     border-radius: 1vh;
     box-shadow: 4px 4px 8px hsl(0deg 0% 60%);
@@ -173,10 +173,10 @@ h2{
 }
 .title{
     font-family: sans-serif;
-    font-size: 2vw;
+    font-size: 1.5vw;
     font-style: normal;
     font-weight: 600;
-    line-height: 2.3vw;
+    line-height: 2.2vw;
     color: #000000;
     margin: auto;
     padding: 3vh;
@@ -195,7 +195,7 @@ h2{
     font-family: sans-serif;
     font-size: 1.36vw;
     font-style: normal;
-    line-height: 2.3vw;
+    line-height: 2.0vw;
     color: #000000;
     margin: auto;
     padding: 3vh;
@@ -204,9 +204,9 @@ h2{
 #dialogueText{
     font-weight: 400;
     font-family: sans-serif;
-    font-size: 2.3vw;
+    font-size: 2.0vw;
     font-style: normal;
-    line-height: 2.3vw;
+    line-height: 2.5vw;
     color: #000000;
     margin: auto;
     padding: 3vh;
@@ -215,7 +215,7 @@ h2{
 #robot-words {
     font-weight: 400;
     font-family: sans-serif;
-    font-size: 2.3vw;
+    font-size: 2.0vw;
     font-style: normal;
     line-height: 2.3vw;
     color: #000000;

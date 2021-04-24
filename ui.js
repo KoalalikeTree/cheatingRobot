@@ -5,9 +5,11 @@ var userSelectionState = false
 var round = -1;
 var mytime;
 var trigger_thumbsUp = false
+var trigger_jump = false
 var trigger_No = false
 var trigger_Dance = false
-let actionCheatRoundId = [4,12]
+var trigger_Wave = false
+let actionCheatRoundId = [1,12]
 let verbalCheatRoundId = [8,16]
 var robotScore = 0
 var yourScore = 0
@@ -20,7 +22,8 @@ $('#begin').click(async function(){
     $('.intro').fadeOut(500)
     $('.round').fadeIn(200);
     $('.round-bg').fadeIn(200);
-    $("#dialogueText").text("Hi,I'm Rusty! I'm excited to play three-card monte with you today. Let's go over the rules of the game")
+    trigger_Wave = true;
+    $("#dialogueText").text("Hi,I'm Rusty! I'm excited to play three-card monte with you today. Let's go over the rules of the game. Click anywhere to begin.")
 })
 
 $('.user-option').click(function(){
@@ -38,11 +41,11 @@ $('.round, .round-bg').click(function(e) {
     $("#card-second-left").fadeIn(0);
     $(".robot-msg").fadeIn(200)
     if (isTutorial===false){
-        $("#robot-words").text("Please remember where the joker is")
+        $("#robot-words").text("Keep your eye on the JOKER!")
     }else{
-        $("#robot-words").text("First, I will show you a set of three cards faced up for 5 seconds, Your need to keep your eye on the JOKER card")
+        $("#robot-words").text("First, I will show you a set of three cards faced up for 5 seconds, You should keep your eye on the JOKER card")
     }
-    countdown(5)
+    countdown(false)
     setTimeout(function(){
         $('.card').removeClass("is-flipped");
         removePattern();
@@ -60,20 +63,20 @@ $('.round, .round-bg').click(function(e) {
     }
 });
 
-function countdown(seconds){
+function countdown(react){
 
-    if (seconds === 10){
-        $("#second-left").text(10 + " Seconds Left")
-        time1 = setTimeout(function (){$("#react-second-left").text(9 + " Seconds Left")}, 1000)
-        time2 = setTimeout(function (){$("#react-second-left").text(8 + " Seconds Left")}, 2000)
-        time3 = setTimeout(function (){$("#react-second-left").text(7 + " Seconds Left")}, 3000)
-        time4 = setTimeout(function (){$("#react-second-left").text(6 + " Seconds Left")}, 4000)
-        time5 = setTimeout(function (){$("#react-second-left").text(5 + " Seconds Left")}, 5000)
-        time6 = setTimeout(function (){$("#react-second-left").text(4 + " Seconds Left")}, 6000)
-        time7 = setTimeout(function (){$("#react-second-left").text(3 + " Seconds Left")}, 7000)
-        time8 = setTimeout(function (){$("#react-second-left").text(2 + " Seconds Left")}, 8000)
-        time9 = setTimeout(function (){$("#react-second-left").text(1 + " Seconds Left")}, 9000)
-        time10 = setTimeout(function(){$("#react-second-left").text(0 + " Seconds Left")}, 10000)
+    if (react){
+        $("#react-second-left").text(5 + " Seconds Left")
+        time1 = setTimeout(function (){$("#react-second-left").text(4 + " Seconds Left")}, 1000)
+        time2 = setTimeout(function (){$("#react-second-left").text(3 + " Seconds Left")}, 2000)
+        time3 = setTimeout(function (){$("#react-second-left").text(2 + " Seconds Left")}, 3000)
+        time4 = setTimeout(function (){$("#react-second-left").text(1 + " Seconds Left")}, 4000)
+        time5 = setTimeout(function (){$("#react-second-left").text(0 + " Seconds Left")}, 5000)
+        // time6 = setTimeout(function (){$("#react-second-left").text(4 + " Seconds Left")}, 6000)
+        // time7 = setTimeout(function (){$("#react-second-left").text(3 + " Seconds Left")}, 7000)
+        // time8 = setTimeout(function (){$("#react-second-left").text(2 + " Seconds Left")}, 8000)
+        // time9 = setTimeout(function (){$("#react-second-left").text(1 + " Seconds Left")}, 9000)
+        // time10 = setTimeout(function(){$("#react-second-left").text(0 + " Seconds Left")}, 10000)
     }else{
         time1 = setTimeout(function (){$("#card-second-left").text(4 + " Seconds Left")}, 1000)
         time2 = setTimeout(function (){$("#card-second-left").text(3 + " Seconds Left")}, 2000)
@@ -81,7 +84,7 @@ function countdown(seconds){
         time4 = setTimeout(function (){$("#card-second-left").text(1 + " Seconds Left")}, 4000)
         time5 = setTimeout(function (){$("#card-second-left").text(0 + " Seconds Left")}, 5000)
     }
-    setTimeout(function (){$("#second-left").text(" ")}, (seconds+1)*1000)
+    setTimeout(function (){$("#second-left").text(" ")}, (5+1)*1000)
 }
 
 function addCardsPattern(){
@@ -130,6 +133,7 @@ function switchGroundTruth(switch1, switch2){
     console.log("Action cheat, switched ground truth", current_order)
 }
 function switch2Dcard(cardId){
+    trigger_jump = true;
     removePattern()
     if (cardId===0 || cardId ===1){
         //user click the left card, switch it with the middle one
@@ -159,6 +163,7 @@ function switch2Dcard(cardId){
 }
 function userWin(){
     $("#robot-words").text("Congrats! You are correct! You WIN this round")
+    trigger_thumbsUp = true;
     $(".msg-box").css("border", "0.5vh solid #12752c")
     if (!isTutorial){yourScore += 1}
     $("#your-score").text("Your Score: "+yourScore);
@@ -220,7 +225,7 @@ function announceAnswer(cardId){
                 verbalCheatRoundId.shift()
                 userLose()
             }
-            robotReaction(3000, cardId,true)
+            robotReaction(3000, cardId, true)
         }else{
             if (current_order[cardId] === 'joker')
             {userWin()}else{userLose()}
@@ -238,19 +243,22 @@ function announceAnswer(cardId){
         setTimeout(function(){
             $('#cards_options').fadeOut(200);
             if (isTutorial){
-                $("#robot-words").text("After each round, you can react to Rusty with the buttons. It's ok if you don't feel like interacting with him! The next round will start in 10 seconds")
+                $("#robot-words").text("After each round, you can react to Rusty with the buttons. It's ok if you don't feel like interacting with him. Just click anywhere else to skip! The next round will start in 5 seconds")
                 isTutorial=false
             }else{
-                $("#robot-words").text("Is there anything you want to say to Rusty?")
+                $("#robot-words").text("Is there anything you want to say to Rusty? Click anywhere else to skip")
             }
             $("#react-second-left").fadeIn(200)
             $("#answer").fadeIn(500);
-            countdown(10);
+            countdown(true);
         }, waitTime)
-        setTimeout(function (){$("#answer").fadeOut(500);
-        if(isTutorial){$("#robot-words").text(" ")}
-        },waitTime+10000)
-        mytime = setTimeout(function(){userReact()},waitTime+15000)}
+        setTimeout(function (){
+            $("#answer").fadeOut(500);
+            if(isTutorial){
+                $("#robot-words").text(" ")
+            }
+        },waitTime+5000)
+        mytime = setTimeout(function(){userReact()},waitTime+10000)}
 }
 
 function finalRound(){
@@ -258,10 +266,10 @@ function finalRound(){
         $("#robot-words").text("That's all! You won "+yourScore+" out of 20. You won the overall game. I lose! Thank you for playing the game with me!")
         $('#round-name').text("YOU WIN!")
     }else if(yourScore<robotScore){
-        $("#robot-words").text("That's all! You Lose "+yourScore+" out of 20. You won the overall game. I win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all! You lost "+yourScore+" out of 20. You lost the overall game. I win! Thank you for playing the game with me!")
         $('#round-name').text("YOU LOSE!")
     }else{
-        $("#robot-words").text("That's all! You Lose "+yourScore+" out of 20. It's a win-win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all! You lost "+yourScore+" out of 20. It's a win-win! Thank you for playing the game with me!")
         $('#round-name').text("WE BOTH WIN!")
     }
     trigger_Dance = true
@@ -282,7 +290,7 @@ function userReact(){
     if (round<20){
         $('.round, .round-bg').fadeIn(200);
         var round_text =round+1
-    $('#round-name').text('Round '+ round_text + "/20")
+    $('#round-name').text('Round '+ round_text)
     }
     else{
         finalRound()
