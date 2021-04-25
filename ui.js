@@ -26,7 +26,7 @@ $('#begin').click(async function(){
     $('.round').fadeIn(200);
     $('.round-bg').fadeIn(200);
     trigger_Wave = true;
-    $("#dialogueText").text("Hi,I'm Rusty! I'm excited to play three-card monte with you today. Let's go over the rules of the game. Click anywhere on the bottom box to begin.")
+    $("#dialogueText").text("Hi,I'm Rusty! I'm excited to play three-card monte with you today. My engineers tell me if I win I get to upgrade my arms! Let's go over the rules of the game. Click anywhere on the bottom box to begin.")
 })
 
 $('#answer, .answer-bg, .user-option').click(function(){
@@ -201,8 +201,9 @@ function announceAnswer(cardId){
         if (round === actionCheatRoundId[0]){
             if (current_order[cardId] !== 'joker'){
                 //if the user answer is not correct, push the cheating round
-                if ((actionCheatRoundId[0]+1<actionCheatRoundId[1])){
-                    actionCheatRoundId[0]+=1
+                if ((actionCheatRoundId.length==1 || actionCheatRoundId[0]+1<actionCheatRoundId[1])){
+                    for (i=0; i < actionCheatRoundId.length; i++)
+                        actionCheatRoundId[i]+=1
                 // if the round is pushed too much to the next cheating round, skip
                 } else {
                     actionCheatRoundId.shift()
@@ -224,8 +225,9 @@ function announceAnswer(cardId){
         if (round === verbalCheatRoundId[0]){
             if (current_order[cardId] !== 'joker'){
                 //if the user answer is not correct, push the cheating round
-                if (verbalCheatRoundId[0]+1<verbalCheatRoundId[1]){
-                    verbalCheatRoundId[0]+=1
+                if (verbalCheatRoundId.length==1 || verbalCheatRoundId[0]+1<verbalCheatRoundId[1]){
+                    for (i=0; i < verbalCheatRoundId.length; i++)
+                        verbalCheatRoundId[i]+=1
                     userLose()
                 // if the round is pushed too much to the next cheating round, skip
                 } else {
