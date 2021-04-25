@@ -14,7 +14,7 @@
 }
 .round-bg{
     position: absolute;
-    height: 30vh;
+    height: 35vh;
     width: 60vw;
     background: white;
     left: 25vw;
@@ -24,7 +24,7 @@
 }
 .round{
     position: absolute;
-    height: 30vh;
+    height: 35vh;
     width: 60vw;
     background: transparent;
     left: 25vw;
