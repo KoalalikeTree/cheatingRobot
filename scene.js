@@ -36,11 +36,29 @@ const api = { state: 'Walking' };
 
 
 $('.round, .round-bg').click(async function (e) {
-    if (isTutorial){
-        await sleep(12000);
-    }else{
+    if (!isTutorial){
         await sleep(8000);
+        flipCardsStartGame()
     }
+});
+
+$("#continue-to-rearrange").click(async function (e) {
+    await sleep(3000);
+    flipCardsStartGame()
+});
+
+$(".card").click(function(){
+    if (userSelectionState){
+        flipAllCards();
+        reassignPos();
+        userSelectionState = false;}
+})
+
+init();
+animate();
+function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
+
+function flipCardsStartGame(){
     flipAllCards();
     fadeToAction('Jump',0.5)
 
@@ -54,18 +72,7 @@ $('.round, .round-bg').click(async function (e) {
     console.log("step=", step)
 
     cardsToSwitch = switchCardsAction[round]
-});
-
-$(".card").click(function(){
-    if (userSelectionState){
-        flipAllCards();
-        reassignPos();
-        userSelectionState = false;}
-})
-
-init();
-animate();
-function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
+}
 
 function init(){
     // read game mechanism from game.js
