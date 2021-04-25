@@ -18,6 +18,7 @@ var isTutorial = false
 var time1,time2,time3,time4,time5,time6,time7,time8,time9,time10
 $('#cards_options, .robot-msg, .round, .round-bg, .answer-bg, #answer, #react-second-left, #continue-btn').fadeOut(0);
 var userReactList = [0,0,0,0,0,0,0,0,0,0]
+var survey_url = 'https://forms.gle/NGHUgL3D9hREZLn97'
 
 $('#begin').click(async function(){
     $('.intro').fadeOut(500)
@@ -269,15 +270,15 @@ function announceAnswer(cardId){
 
 function finalRound(){
     if (yourScore>robotScore){
-        $("#robot-words").text("That's all! You won "+yourScore+" out of 10. You won the overall game. I lose! Thank you for playing the game with me.")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You won the overall game. I lose! Thank you for playing the game with me.")
         $('#round-name').text("YOU WIN!")
         trigger_Death = true
     }else if(yourScore<robotScore){
-        $("#robot-words").text("That's all! You won "+yourScore+" out of 10. You lost the overall game. I win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You lost the overall game. I win! Thank you for playing the game with me!")
         $('#round-name').text("YOU LOSE!")
         trigger_Dance = true
     }else{
-        $("#robot-words").text("That's all! You won "+yourScore+" out of 10. It's a win-win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. It's a win-win! Thank you for playing the game with me!")
         $('#round-name').text("WE BOTH WIN!")
     }
     var reactText = ""
@@ -326,4 +327,7 @@ $("#neutral-btn").click(function (){
 $("#angry-btn").click(function (){
     if (round>0 && round<=20){userReactList[round-1]=3}
     console.log(userReactList)
+})
+$("#continue-btn").click(function (){
+    window.open(survey_url)
 })
