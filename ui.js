@@ -17,7 +17,7 @@ var robotScore = 0
 var yourScore = 0
 var isTutorial = false
 var time1,time2,time3,time4,time5,time6,time7,time8,time9,time10
-$('#cards_options, .robot-msg, .round, .round-bg, .answer-bg, #answer, #react-second-left, #continue-btn').fadeOut(0);
+$('#cards_options, .robot-msg, .round, .round-bg, .answer-bg, #answer, #react-second-left, .continue').fadeOut(0);
 var userReactList = [0,0,0,0,0,0,0,0,0,0]
 var survey_url = 'https://forms.gle/NGHUgL3D9hREZLn97'
 
@@ -36,6 +36,18 @@ $('#answer, .answer-bg, .user-option').click(function(){
     clearTimeout(time6);clearTimeout(time7);clearTimeout(time8);clearTimeout(time9);clearTimeout(time10);
 })
 
+$("#continue-to-flip").click(function (){
+    $("#robot-words").text("I will then place the cards face down")
+    $(this).fadeOut(0)
+    $("#continue-to-rearrange").fadeIn(0)
+})
+
+$("#continue-to-rearrange").click(function(){
+    $("#robot-words").text("...and rearrange them. Remember to not lose focus on the JOKER card")
+    setTimeout(flipCardDown, 2000)
+    $(this).fadeOut(200)
+})
+
 $('.round, .round-bg').click(function(e) {
     $('.round, .round-bg').fadeOut(200)
     addCardsPattern();
@@ -49,22 +61,22 @@ $('.round, .round-bg').click(function(e) {
         $("#robot-words").text("First, I will show you a set of three cards faced up for 5 seconds, You should keep your eye on the JOKER card")
     }
     countdown(false)
-    setTimeout(function(){
-        $('.card').removeClass("is-flipped");
-        removePattern();
-        if (isTutorial){
-            $("#robot-words").text("I will then place the cards face down")
-        }else{
-            $("#cards_options").fadeOut(500);
-            $("#card-second-left").fadeOut(0);
-        }
-        },
-        7000)
-    if (isTutorial){
-        setTimeout(function (){$("#cards_options").fadeOut(200);$("#card-second-left").fadeOut(0);},10000)
-        setTimeout(function(){$("#robot-words").text("...and rearrange them. Remember to not lose focus on the JOKER card")},10000)
+    if (!isTutorial){
+        setTimeout(flipCardDown, 7000)
+    }else{
+        setTimeout(function(){
+            flipCardDown();
+            $("#continue-to-flip").fadeIn(200)
+        }, 7000)
     }
 });
+
+function flipCardDown(){
+    $('.card').removeClass("is-flipped");
+    removePattern();
+    $("#cards_options").fadeOut(500);
+    $("#card-second-left").fadeOut(500);
+}
 
 function countdown(react){
 
@@ -303,7 +315,7 @@ function finalRound(){
     }, 5000)
     setTimeout(function (){
         $("#robot-words").text("Copy this number >> "+ reactText + " << Then click continue")
-        $("#continue-btn").fadeIn(200)
+        $("#continue-to-survey").fadeIn(200)
     }, 12000)
 }
 
@@ -341,6 +353,6 @@ $("#angry-btn").click(function (){
     if (round>0 && round<=20){userReactList[round-1]=3}
     console.log(userReactList)
 })
-$("#continue-btn").click(function (){
+$("#continue-to-survey").click(function (){
     window.open(survey_url)
 })
