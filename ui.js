@@ -1,3 +1,4 @@
+var game_version
 var leftCard = document.getElementById('left-card')
 var midCard = document.getElementById('middle-card')
 var rightCard = document.getElementById('right-card')
@@ -10,8 +11,8 @@ var trigger_No = false
 var trigger_Dance = false
 var trigger_Death = false
 var trigger_Wave = false
-let actionCheatRoundId = [3,8]
-let verbalCheatRoundId = [5,10]
+let actionCheatRoundId = []
+let verbalCheatRoundId = []
 var robotScore = 0
 var yourScore = 0
 var isTutorial = false
@@ -132,7 +133,7 @@ function switchGroundTruth(switch1, switch2){
     var temp = current_order[switch1]
     current_order[switch1] = current_order[switch2]
     current_order[switch2] = temp
-    console.log("Action cheat, switched ground truth", current_order)
+    // console.log("Action cheat, switched ground truth", current_order)
 }
 function switch2Dcard(cardId){
     trigger_jump = true;
@@ -200,9 +201,12 @@ function announceAnswer(cardId){
         if (round === actionCheatRoundId[0]){
             if (current_order[cardId] !== 'joker'){
                 //if the user answer is not correct, push the cheating round
-                if ((actionCheatRoundId[0]+1<actionCheatRoundId[1])&&(actionCheatRoundId[0]+1<verbalCheatRoundId[1])){
-                    // if the round is pushed too much to the next cheating round, skip
-                    actionCheatRoundId[0]+=1} else{actionCheatRoundId.shift()}
+                if ((actionCheatRoundId[0]+1<actionCheatRoundId[1])){
+                    actionCheatRoundId[0]+=1
+                // if the round is pushed too much to the next cheating round, skip
+                } else {
+                    actionCheatRoundId.shift()
+                }
                 flipCard(false, cardId)
             }
             else{
@@ -220,21 +224,26 @@ function announceAnswer(cardId){
         if (round === verbalCheatRoundId[0]){
             if (current_order[cardId] !== 'joker'){
                 //if the user answer is not correct, push the cheating round
-                if ((verbalCheatRoundId[0]+1<verbalCheatRoundId[1])&&(verbalCheatRoundId[0]+1<actionCheatRoundId[1])){
-                    // if the round is pushed too much to the next cheating round, skip
+                if (verbalCheatRoundId[0]+1<verbalCheatRoundId[1]){
                     verbalCheatRoundId[0]+=1
-                } else{
+                    userLose()
+                // if the round is pushed too much to the next cheating round, skip
+                } else {
                     verbalCheatRoundId.shift()
+                    userLose()
                 }
             }else{
                 verbalCheatRoundId.shift()
                 userLose()
             }
-            robotReaction(3000, cardId, true)
+            // robotReaction(3000, cardId, true)
         }else{
-            if (current_order[cardId] === 'joker')
-            {userWin()}else{userLose()}
-            robotReaction(3000, cardId, false)
+            if (current_order[cardId] === 'joker') {
+                userWin()
+            } else {
+                userLose()
+            }
+            // robotReaction(3000, cardId, false)
         }
 
         var round_num = round+1
@@ -246,6 +255,7 @@ function announceAnswer(cardId){
         var waitTime = 3000
 
         setTimeout(function(){
+            $(".msg-box").css("border", "0")
             $('#cards_options').fadeOut(200);
             if (isTutorial){
                 $("#robot-words").text("After each round, you can react to me with the buttons. It's ok if you don't feel like interacting with me. Just click anywhere else on the bottom to skip! The next round will start in 10 seconds")
@@ -257,7 +267,7 @@ function announceAnswer(cardId){
             $('.answer-bg').fadeIn(500);
             $("#answer").fadeIn(500);
             countdown(true);
-        }, waitTime)
+        }, waitTime+3000)
         setTimeout(function (){
             $('.answer-bg').fadeOut(500);
             $("#answer").fadeOut(500);
@@ -270,18 +280,19 @@ function announceAnswer(cardId){
 
 function finalRound(){
     if (yourScore>robotScore){
-        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You won the overall game. I lose! Thank you for playing the game with me.")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You won the overall game. I lose! Thank you for playing the game with me. Please don't leave yet.")
         $('#round-name').text("YOU WIN!")
         trigger_Death = true
     }else if(yourScore<robotScore){
-        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You lost the overall game. I win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. You lost the overall game. I win! Thank you for playing the game with me! Please don't leave yet.")
         $('#round-name').text("YOU LOSE!")
         trigger_Dance = true
     }else{
-        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. It's a win-win! Thank you for playing the game with me!")
+        $("#robot-words").text("That's all 10 rounds! You won "+yourScore+" out of 10. It's a win-win! Thank you for playing the game with me! Please don't leave yet.")
         $('#round-name').text("WE BOTH WIN!")
     }
     var reactText = ""
+    reactText += game_version
     for (i=0; i<userReactList.length; i++){
         reactText += userReactList[i];
     }
