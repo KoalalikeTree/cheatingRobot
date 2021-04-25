@@ -447,6 +447,10 @@ function animate() {
         fadeToAction('Running',0.2);
         trigger_Dance=false;
     }
+    if (trigger_Death){
+        fadeToAction('Death',0.6);
+        trigger_Death=false;
+    }
     if (trigger_Wave){
         fadeToAction('Wave',0.2);
         trigger_Wave=false;

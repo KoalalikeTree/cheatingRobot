@@ -47,6 +47,16 @@
     display: flex;
     border-radius: 2vh;
 }
+.answer-bg{
+    position: absolute;
+    height: 30vh;
+    width: 80vw;
+    background: white;
+    left: 12.5vw;
+    bottom: 2.5vh;
+    border-radius: 10px;
+    opacity: 0.99;
+}
 #answer{
     position: absolute;
     width: 50vw;
@@ -63,8 +73,8 @@
     margin: 1vh;
     border-radius: 1vh;
     box-shadow: 4px 4px 8px hsl(0deg 0% 60%);
-    background-color: #0058DB;
-    border-color: #0058DB;
+    background-color: #437cd3;
+    border-color: #437cd3;
     display: flex;
     align-items: center;
     justify-items: center;
