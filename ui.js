@@ -11,6 +11,8 @@ var trigger_No = false
 var trigger_Dance = false
 var trigger_Death = false
 var trigger_Wave = false
+var trigger_Walking = false
+var trigger_idle = false
 let actionCheatRoundId = []
 let verbalCheatRoundId = []
 var robotScore = 0
@@ -31,6 +33,7 @@ $('#begin').click(async function(){
 
 $('#answer, .answer-bg, .user-option').click(function(){
     userReact();
+    trigger_idle = true
     clearTimeout(mytime);
     clearTimeout(time1);clearTimeout(time2);clearTimeout(time3);clearTimeout(time4);clearTimeout(time5);
     clearTimeout(time6);clearTimeout(time7);clearTimeout(time8);clearTimeout(time9);clearTimeout(time10);
@@ -277,6 +280,7 @@ function announceAnswer(cardId){
             }else{
                 $("#robot-words").text("Is there anything you want to say to me? Click anywhere else on the bottom to skip")
             }
+            trigger_Walking = true
             $("#react-second-left").fadeIn(200)
             $('.answer-bg').fadeIn(500);
             $("#answer").fadeIn(500);
@@ -323,7 +327,7 @@ function userReact(){
     if (round<10){
         $('.round, .round-bg').fadeIn(200);
         var round_text =round+1
-    $('#round-name').text('Round '+ round_text)
+        $('#round-name').text('Round '+ round_text)
     }
     else{
         finalRound()

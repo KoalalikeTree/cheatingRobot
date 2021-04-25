@@ -451,6 +451,10 @@ function animate() {
         if (camera.position.z > 7.9 && camera.position.z <= 10){camera.translateZ( + 0.05 );}
         else if (camera.position.z >= 10){cameraTransBack=false}
     }
+    if (trigger_idle){
+        fadeToAction('Idle',0.5);
+        trigger_idle=false;
+    }
     if (trigger_thumbsUp){
         fadeToAction('ThumbsUp',0.2);
         trigger_thumbsUp=false;
@@ -474,6 +478,10 @@ function animate() {
     if (trigger_Wave){
         fadeToAction('Wave',0.2);
         trigger_Wave=false;
+    }
+    if (trigger_Walking){
+        fadeToAction('Walking',0.5);
+        trigger_Walking=false;
     }
     if (flipClub || flipDiamond || flipJoker){
         if (flipClub){
