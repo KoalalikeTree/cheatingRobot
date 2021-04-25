@@ -95,14 +95,15 @@ function countdown(react){
         time8 = setTimeout(function (){$("#react-second-left").text(2 + " Seconds Left")}, 8000)
         time9 = setTimeout(function (){$("#react-second-left").text(1 + " Seconds Left")}, 9000)
         time10 = setTimeout(function(){$("#react-second-left").text(0 + " Seconds Left")}, 10000)
+        setTimeout(function (){$("#second-left").text(" ")}, (10+1)*1000)
     }else{
         time1 = setTimeout(function (){$("#card-second-left").text(4 + " Seconds Left")}, 1000)
         time2 = setTimeout(function (){$("#card-second-left").text(3 + " Seconds Left")}, 2000)
         time3 = setTimeout(function (){$("#card-second-left").text(2 + " Seconds Left")}, 3000)
         time4 = setTimeout(function (){$("#card-second-left").text(1 + " Seconds Left")}, 4000)
         time5 = setTimeout(function (){$("#card-second-left").text(0 + " Seconds Left")}, 5000)
+        setTimeout(function (){$("#second-left").text(" ")}, (6+1)*1000)
     }
-    setTimeout(function (){$("#second-left").text(" ")}, (6+1)*1000)
 }
 
 function addCardsPattern(){
@@ -266,7 +267,7 @@ function announceAnswer(cardId){
         var round_num = round+1
 
         if (round_num<=20){
-            $('#dialogueText').text('Here comes round '+ round_num + ' of the game')
+            $('#dialogueText').text('Here comes round '+ round_num + ' of the game. Click anywhere on the bottom box to continue.')
         }
 
         var waitTime = 3000
@@ -292,8 +293,9 @@ function announceAnswer(cardId){
             if(isTutorial){
                 $("#robot-words").text(" ")
             }
-        },waitTime+10000)
-        mytime = setTimeout(function(){userReact()},waitTime+10000)}
+            trigger_idle = true
+        },waitTime+13000)
+        mytime = setTimeout(function(){userReact()},waitTime+13000)}
 }
 
 function finalRound(){
