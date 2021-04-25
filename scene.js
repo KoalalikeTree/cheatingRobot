@@ -36,29 +36,11 @@ const api = { state: 'Walking' };
 
 
 $('.round, .round-bg').click(async function (e) {
-    if (!isTutorial){
+    if (isTutorial){
+        await sleep(12000);
+    }else{
         await sleep(8000);
-        flipCardsStartGame()
     }
-});
-
-$("#continue-to-rearrange").click(async function (e) {
-    await sleep(3000);
-    flipCardsStartGame()
-});
-
-$(".card").click(function(){
-    if (userSelectionState){
-        flipAllCards();
-        reassignPos();
-        userSelectionState = false;}
-})
-
-init();
-animate();
-function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
-
-function flipCardsStartGame(){
     flipAllCards();
     fadeToAction('Jump',0.5)
 
@@ -72,11 +54,35 @@ function flipCardsStartGame(){
     console.log("step=", step)
 
     cardsToSwitch = switchCardsAction[round]
+});
+
+$(".card").click(function(){
+    if (userSelectionState){
+        flipAllCards();
+        reassignPos();
+        userSelectionState = false;}
+})
+
+init();
+animate();
+function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
 function init(){
-    // read game mechanism from game.js
 
+    // Determine version of the game (control/verbal/action cheat)
+    game_version = getRandomInt(3)
+    // game_version = 1
+    if (game_version === 1) {
+        verbalCheatRoundId = [2,5,8]
+    } else if (game_version === 2) {
+        actionCheatRoundId = [2,5,8]
+    }
+
+    // read game mechanism from game.js
     for (var i = 0; i < gameMech.length; i++) {
         var switch_actions = []
         for  (var j = 0; j < gameMech[i].order.length; j++) {
@@ -254,7 +260,7 @@ function createGUI( model, animations ) {
 
 			}
 
-export function fadeToAction( name, duration ) {
+function fadeToAction( name, duration ) {
 
     if (!activeAction){
         console.log(activeAction);
