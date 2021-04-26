@@ -329,7 +329,7 @@ function userReact(){
     if (round<10){
         $('.round, .round-bg').fadeIn(200);
         var round_text =round+1
-        $('#round-name').text('Round '+ round_text)
+        $('#round-name').text('Round '+ round_text + ' / 10')
     }
     else{
         finalRound()
