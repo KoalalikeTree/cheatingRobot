@@ -313,6 +313,7 @@ function finalRound(){
     }
     var reactText = ""
     reactText += game_version
+    reactText += yourScore
     for (i=0; i<userReactList.length; i++){
         reactText += userReactList[i];
     }
