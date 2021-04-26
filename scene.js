@@ -81,8 +81,8 @@ function getRandomInt(max) {
 function init(){
 
     // Determine version of the game (control/verbal/action cheat)
-    game_version = getRandomInt(3)
-    // game_version = 1
+    // game_version = getRandomInt(3)
+    game_version = 2
     if (game_version === 1) {
         verbalCheatRoundId = [2,5,8]
     } else if (game_version === 2) {
