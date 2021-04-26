@@ -21,7 +21,8 @@ var isTutorial = false
 var time1,time2,time3,time4,time5,time6,time7,time8,time9,time10
 $('#cards_options, .robot-msg, .round, .round-bg, .answer-bg, #answer, #react-second-left, .continue').fadeOut(0);
 var userReactList = [0,0,0,0,0,0,0,0,0,0]
-var survey_url = 'https://forms.gle/NGHUgL3D9hREZLn97'
+// var survey_url = 'https://forms.gle/NGHUgL3D9hREZLn97'
+var survey_url = ' '
 
 $('#begin').click(async function(){
     $('.intro').fadeOut(500)
